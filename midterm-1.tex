@@ -1,0 +1,765 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={STAT 345 Midterm Project},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{STAT 345 Midterm Project}
+\author{}
+\date{\vspace{-2.5em}April 3rd, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{quote}
+``Our offense is like the Pythagorean Theorem. There is no answer!'',
+\emph{Shaquille O'Neal}
+\end{quote}
+
+\subsection{The Background}\label{the-background}
+
+Your role for the midterm project is that of data analyst intern at an
+NBA (professional basketball) team. Your direct supervisor (also part of
+the analytics team) has asked you to create a data visualization to
+illustrate how (or if) the team's shots have changed over time. After
+some initial clarifying questions, your supervisor confessed that they
+had seen some pretty cool shot charts at
+\url{http://savvastjortjoglou.com/nba-shot-sharts.html} and would like
+to extend the ideas a bit.
+
+Your data for the midterm project may come from a variety of sources,
+including the NBA directly, as well as Basketball-Reference, HoopsHype,
+and others. There are several ways to access the data, but perhaps the
+simplest is through a package. There are a few options (each with some
+benefits, drawbacks, and potential headaches):
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{nbastatR}
+\item
+  \texttt{hoopR}
+\item
+  \texttt{AdvancedBasketballStats}
+\end{itemize}
+
+Note: if you would prefer to analyze college basketball, packages exist
+for that too (such as \texttt{cbbdata}). If you would prefer to look
+into a different sport, we can investigate that as well. Please let me
+know in advance if you intend to go down one of these alternate routes.
+
+\subsection{The Tasks}\label{the-tasks}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  (30 points) Produce a graphic displaying the shot locations for a
+  particular team over several years. Some notes:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Colors should be chosen to reflect the team, if possible.
+  \item
+    There are likely many overlaid points -- handle this by either
+    binning these by location, or use opacity and size.
+  \item
+    Incorporate information about whether the shot was made or not
+    (shape, color, etc.).
+  \item
+    The graphic should be well-labeled, titled, etc.
+  \item
+    Start with a graph for a single year, then extend to several years.
+    Up to 20 years of shot data is available. Either facet these by year
+    or animate using the years.
+  \item
+    You'll want to figure out what the coordinates mean somehow. This
+    might be through the documentation, but could also be determined
+    using aspects of the data itself and the dimensions of an NBA court.
+  \item
+    Put a basketball court on the background of the image (you'll need
+    to scale it appropriately).
+  \end{itemize}
+\end{enumerate}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.6
+## v forcats   1.0.1     v stringr   1.6.0
+## v ggplot2   4.0.1     v tibble    3.3.1
+## v lubridate 1.9.4     v tidyr     1.3.2
+## v purrr     1.2.1     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'ggpubr' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'png' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'gganimate' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'gifski' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- ESPN NBA Play-by-Play from hoopR data repository ------------- hoopR 2.1.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## i Data updated: 2026-04-02 06:44:12 CDT
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 108,641 x 7
+##    score_value team_id shooting_play coordinate_x_raw coordinate_y_raw season
+##          <int>   <int> <lgl>                    <dbl>            <dbl>  <int>
+##  1           0       3 TRUE                        23              1     2015
+##  2           2       3 TRUE                        20             19     2015
+##  3           2       3 TRUE                        24             15     2015
+##  4           2       3 TRUE                        24             17     2015
+##  5           2       3 TRUE                        28              2     2015
+##  6           0       3 TRUE                        25             13.8   2015
+##  7           0       3 TRUE                        26              1     2015
+##  8           0       3 TRUE                        35             23     2015
+##  9           2       3 TRUE                        12              2     2015
+## 10           0       3 TRUE                        22              5     2015
+## # i 108,631 more rows
+## # i 1 more variable: make_miss <chr>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in formals(fun): argument is not a function
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-4.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-5.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-6.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-7.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-8.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-9.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-10.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-11.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-12.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-13.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-14.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-15.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-16.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-17.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-18.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-19.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-20.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-21.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-22.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-23.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-24.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-25.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-26.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-27.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-28.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-29.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-30.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-31.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-32.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-33.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-34.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-35.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-36.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-37.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-38.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-39.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-40.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-41.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-42.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-43.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-44.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-45.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-46.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-47.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-48.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-49.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-50.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-51.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-52.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-53.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-54.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-55.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-56.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-57.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-58.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-59.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-60.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-61.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-62.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-63.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-64.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-65.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-66.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-67.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-68.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-69.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-70.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-71.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-72.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-73.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-74.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-75.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-76.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-77.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-78.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-79.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-80.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-81.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-82.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-83.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-84.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-85.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-86.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-87.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-88.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-89.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-90.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-91.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-92.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-93.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-94.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-95.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-96.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-97.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-98.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-99.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-2-100.pdf}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  (30 points) Summarize the graphic/series of graphics into a
+  digestible, bullet-point brief report for front-office staff. Some
+  notes:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The main body of the report should be very brief -- just the
+    graphic(s) and the bullet-pointed list of findings, which should be
+    short and clear.
+  \item
+    Include a more detailed explanation of these bullet points, for
+    further reading by those interested. This section should follow the
+    bullet-point section, but should be organized similarly for
+    reference.
+  \item
+    Your report to the front-office shouldn't include any code.
+  \item
+    This report should be generated using RMarkdown. However, the choice
+    of output type (Word, PDF, or HTML) is up to you (you could even
+    make slides if you want to).
+  \end{itemize}
+\end{enumerate}
+
+\subsubsection{\texorpdfstring{\textbf{Summary:}}{Summary:}}\label{summary}
+
+\begin{itemize}
+\item
+  \textbf{Most Common Shot Locations:} under the basket, free throw
+  line, corners, and top of three point line
+\item
+  \textbf{Shift Across Seasons:} shot distribution slowly shifts from a
+  wide spread to a condensed shot selection of just a few main spots
+\item
+  \textbf{Make/Miss Ratio:} made shots appear more in the common shot
+  locations and increase over time
+\item
+  \textbf{Suggestions for Improvement:} focus on improving shot
+  performance or shot location to increase overall scoring success
+\end{itemize}
+
+\subsubsection{\texorpdfstring{\textbf{Explanation:}}{Explanation:}}\label{explanation}
+
+\begin{itemize}
+\item
+  \textbf{Most Common Shot Locations:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The majority of shot attempts are made directly under the basket, on
+    the free throw line, or along the three point line. On the three
+    point line, there is a preference for the corners and wings, with
+    fewer in between. The highest concentration of shot attempts are
+    under the basket. This aligns with the common strategy for most
+    basketball teams, which is to focus on point efficiency by
+    prioritizing either close range shots and layups for easy points or
+    three point shots for more points.
+  \end{itemize}
+\item
+  \textbf{Shift Across Seasons:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Looking at all the seasons, from 2015 to 2026, shot distribution
+    gradually shifts. In the early seasons, there is a large spread of
+    shots all over the court. Then, over time, the shot distribution
+    narrows down to most being taken under the basket, on the free throw
+    line, in the corners, or on the wings and less being taken in the
+    mid range area. This indicates a clear improvement in playing style
+    to prioritize scoring efficiency.
+  \end{itemize}
+\item
+  \textbf{Make/Miss Ratio:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The majority of made shots tend to be concentrated under the basket,
+    where scoring is easier and more consistent, as well as on the free
+    throw line in later seasons, where shots are uncontested. Over time,
+    the data shows improvement in shot successes. In the early seasons
+    you can clearly see there are more red dots, especially for free
+    throws. It slowly shifts from red to blue in the later seasons ,
+    showing an increase in made free throws. There also appears to be a
+    greater percentage of made shots beneath the basket in the later
+    seasons compared to the early seasons.
+  \end{itemize}
+\item
+  \textbf{Suggestions for Improvement:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    To improve overall scoring success, I suggest focusing on shot
+    performance and better ball movement. Quality shots and opening up
+    players would help increase the percentage of made shots. Another
+    suggestion is to focus on taking more close range shots rather than
+    three-pointers, since there is already higher success under the
+    basket, which could lead to higher scoring output.
+  \end{itemize}
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  (30 points) Write and document clean, efficient, reproducible code.
+  Some notes:
+\end{enumerate}
+
+\begin{itemize}
+\item
+  This code will be viewed by your direct supervisor.
+\item
+  The code file should include your code to gather, join, and clean the
+  data; the code to generate the graphic(s) presented; and your
+  commentary on the results (so, a single .rmd file, or an .rmd file
+  that sources an .r file).
+\item
+  Your code should be clean, organized, and reproducible. Remove
+  unnecessary/scratch/exploratory code.
+\item
+  Your code should be well commented. In particular, any decisions or
+  judgement calls made in the analysis process should be
+  explained/justified. Sections of code should be identified even if not
+  functionalized (including purpose, data/argument inputs, analysis
+  outputs).
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# add libraries}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(hoopR)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(ggpubr)}
+\FunctionTok{library}\NormalTok{(png)}
+\FunctionTok{library}\NormalTok{(gganimate)}
+\FunctionTok{library}\NormalTok{(gifski)}
+
+\CommentTok{\# load in data from hoopR for seasons 2015 to 2026}
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ hoopR}\SpecialCharTok{::}\FunctionTok{load\_nba\_pbp}\NormalTok{(}\AttributeTok{seasons =} \DecValTok{2015}\SpecialCharTok{:}\DecValTok{2026}\NormalTok{)}
+
+\CommentTok{\# filters data to the New Orleans Pelicans (team 3) and only shooting plays}
+\CommentTok{\# adds new column to classify makes/misses}
+\CommentTok{\# gets rid of unnecessary columns so data is easier to manage and loads faster}
+\NormalTok{baby\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{filter}\NormalTok{(team\_id }\SpecialCharTok{==} \DecValTok{3}\NormalTok{, shooting\_play }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{make\_miss =} \FunctionTok{ifelse}\NormalTok{(score\_value }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\StringTok{"Make"}\NormalTok{, }\StringTok{"Miss"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(}\StringTok{"score\_value"}\NormalTok{, }\StringTok{"team\_id"}\NormalTok{, }\StringTok{"shooting\_play"}\NormalTok{, }\StringTok{"coordinate\_x\_raw"}\NormalTok{, }\StringTok{"coordinate\_y\_raw"}\NormalTok{, }\StringTok{"season"}\NormalTok{, }\StringTok{"make\_miss"}\NormalTok{)}
+
+\CommentTok{\# gets background image of court for animation}
+\NormalTok{img }\OtherTok{\textless{}{-}} \FunctionTok{readPNG}\NormalTok{(}\StringTok{"midterm\_bbcourt.png"}\NormalTok{)}
+
+\CommentTok{\# creates a plot based on raw x and y coords}
+\CommentTok{\# adds background image of NBA court}
+\CommentTok{\# adjust opacity (alpha) so darker AND added weight/height so dots are larger for multiple shots from same coords}
+\CommentTok{\# assign colors for made/missed shots...made shots = Pelicans Navy, missed = Pelicans Red}
+\CommentTok{\# added labels for title, axises, and legend}
+\CommentTok{\# fix coords for more accurate alignment with background image}
+\CommentTok{\# add animation between seasons, adjusting transition/state length for better viewing}
+\FunctionTok{ggplot}\NormalTok{(baby\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ coordinate\_x\_raw, }\AttributeTok{y =}\NormalTok{ coordinate\_y\_raw)) }\SpecialCharTok{+} 
+  \FunctionTok{background\_image}\NormalTok{(img) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_jitter}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ make\_miss), }\AttributeTok{width =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{height =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{size =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Make"} \OtherTok{=} \StringTok{"\#0C2340"}\NormalTok{, }\StringTok{"Miss"} \OtherTok{=} \StringTok{"\#C8102E"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"New Orleans Pelicans Shots \{closest\_state\}"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Raw X Coord"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Raw Y Coord"}\NormalTok{, }\AttributeTok{color =} \StringTok{"Shot Result"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{coord\_fixed}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{50}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{36.5}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{transition\_states}\NormalTok{(season, }\AttributeTok{transition\_length =} \DecValTok{3}\NormalTok{, }\AttributeTok{state\_length =} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in formals(fun): argument is not a function
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-4.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-5.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-6.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-7.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-8.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-9.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-10.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-11.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-12.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-13.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-14.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-15.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-16.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-17.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-18.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-19.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-20.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-21.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-22.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-23.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-24.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-25.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-26.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-27.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-28.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-29.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-30.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-31.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-32.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-33.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-34.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-35.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-36.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-37.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-38.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-39.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-40.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-41.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-42.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-43.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-44.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-45.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-46.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-47.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-48.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-49.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-50.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-51.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-52.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-53.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-54.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-55.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-56.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-57.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-58.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-59.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-60.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-61.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-62.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-63.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-64.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-65.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-66.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-67.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-68.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-69.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-70.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-71.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-72.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-73.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-74.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-75.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-76.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-77.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-78.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-79.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-80.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-81.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-82.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-83.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-84.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-85.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-86.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-87.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-88.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-89.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-90.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-91.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-92.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-93.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-94.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-95.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-96.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-97.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-98.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-99.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{midterm-1_files/figure-latex/unnamed-chunk-3-100.pdf}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\item
+  (10 points) Above and Beyond. Choose either option below. You are
+  welcome to explore both, but only one is required.
+
+  \begin{itemize}
+  \item
+    Option 1: Explore the data a bit, and create a graphic that uses (or
+    incorporates) different information than what was used above. Some
+    notes:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Create an additional graphic that incorporates at least one
+      additional variable not previously used (this should add to the
+      graphic in part 1). The additional data should be drawn from a
+      different dataset (function call) than the original graphic used.
+      These two (or more) datasets may need to be joined appropriately.
+    \item
+      You can either add more information to the plot above, or create a
+      different plot.
+    \item
+      Formatting, labelling, etc. are all important here too.
+    \item
+      Adding marginal densities or other ``bells and whistles'' might
+      offer additional insight.
+    \item
+      This graphic should be included at the end of the report (after
+      the more detailed explanations).
+    \item
+      You should include a brief description of the graphic
+      (highlighting the different/additional information used).
+    \end{itemize}
+  \item
+    Option 2: If the NBA were to incorporate a 4-point shot, where would
+    you draw a 4-point arc? Some notes:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      You likely should base your decision at least partly on proportion
+      of shots made from a given range. You might consider an expected
+      value calculation here.
+    \item
+      Your arc can be shaped as you see fit; simple arcs are sufficient
+      for this exploration.
+    \item
+      Provide an example of a consequence (positive or negative) if a
+      4-point shot was incorporated. (e.g., ``my\_favorite\_player's
+      season point total would increase by x\%'').
+    \item
+      You do not need to create a plot representing your arc, though you
+      are welcome to do so!
+    \end{itemize}
+  \end{itemize}
+\end{enumerate}
+
+\subsubsection{Analysis/Reasoning:}\label{analysisreasoning}
+
+The NBA three point line measures at 23.75 feet straight out from the
+base line. According to
+\url{https://www.statmuse.com/nba/ask/pelicans-3-point-shooting-percentage},
+the Pelican's shooting percentage for three pointers in 2025-2026 is
+34.7\%. Using that percentage, an expected value for threes would be 3 *
+34.7\% = 1.04. Based on that, the average make percentage for an
+imagined 4 point shot would have to be 1.04 / 4 = 26.03\%. Then, to
+determine where to put the new 4 point line, I calculated how far out
+the Pelicans were making roughly 26.03\% of their shots.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{part4data }\OtherTok{\textless{}{-}}\NormalTok{ baby\_data }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(coordinate\_y\_raw }\SpecialCharTok{\textgreater{}=} \DecValTok{28}\NormalTok{)}
+\NormalTok{makeCount }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(part4data}\SpecialCharTok{$}\NormalTok{make\_miss }\SpecialCharTok{==} \StringTok{"Make"}\NormalTok{)}
+\NormalTok{percent28 }\OtherTok{\textless{}{-}}\NormalTok{ makeCount }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(part4data)}
+\NormalTok{percent28}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2295633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{part4data }\OtherTok{\textless{}{-}}\NormalTok{ baby\_data }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(coordinate\_y\_raw }\SpecialCharTok{\textgreater{}=} \DecValTok{27}\NormalTok{)}
+\NormalTok{makeCount }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(part4data}\SpecialCharTok{$}\NormalTok{make\_miss }\SpecialCharTok{==} \StringTok{"Make"}\NormalTok{)}
+\NormalTok{percent27 }\OtherTok{\textless{}{-}}\NormalTok{ makeCount }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(part4data)}
+\NormalTok{percent27}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2859477
+\end{verbatim}
+
+Based on the above code, I've determined the distance for a 4 point line
+should be 27.5 feet out from the base line. The Pelicans make roughly
+28.59\% of their shots at or beyond 27 feet from the base line, but only
+22.96\% of their shots at or beyond 28 feet. This makes 27.5 feet a
+happy medium that should get the make percentage close to 26\%. Doing
+some simple math, 27.5 - 23.75 = 3.75, the 4 point line would follow the
+current 3 point line, but be 3.75 feet further from the basket.
+
+\subsubsection{Consequences:}\label{consequences}
+
+The addition of a 4 point line at 27.5 feet from the base line would
+have positive results for teams with players who consistently score deep
+threes. For anyone who can consistently score beyond 27.5 feet, all
+those former three point shots become four point shots, increasing their
+overall points per game which in turn increases their team's overall
+scoring output, causing their team to be more successful in games.
+
+Assuming my favorite player on the New Orleans Pelicans is Trey Murphy
+III, who currently has a 38.3 three point percentage, and, according to
+\url{https://thebirdwrites.com/triggad-trey-murphy-iiis-elite-shooting-sparks-pelicans/},
+41.8\% of his threes are from 25-29 feet. With that kind of range, he
+would definitely be making a significant amount of 4 pointers,
+increasing his average points per game and giving his team a huge
+offensive advantage.
+
+\subsection{The Deliverables}\label{the-deliverables}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Upload your report and code file(s) to GitHub by 5:00pm on Friday,
+  April 3.
+\item
+  Submit (on Canvas) your report, code, and link to your GitHub
+  repository by 5:00pm on Friday, April 3.
+\end{enumerate}
+
+\end{document}

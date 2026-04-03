@@ -1,0 +1,196 @@
+---
+title: "STAT 345 Midterm Project"
+font: 12pt
+date: "April 3rd, 2026"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+> "Our offense is like the Pythagorean Theorem. There is no answer!", *Shaquille O'Neal*
+
+## The Background
+
+Your role for the midterm project is that of data analyst intern at an NBA (professional basketball) team. Your direct supervisor (also part of the analytics team) has asked you to create a data visualization to illustrate how (or if) the team's shots have changed over time. After some initial clarifying questions, your supervisor confessed that they had seen some pretty cool shot charts at <http://savvastjortjoglou.com/nba-shot-sharts.html> and would like to extend the ideas a bit.
+
+Your data for the midterm project may come from a variety of sources, including the NBA directly, as well as Basketball-Reference, HoopsHype, and others. There are several ways to access the data, but perhaps the simplest is through a package. There are a few options (each with some benefits, drawbacks, and potential headaches):
+
+-   `nbastatR`
+-   `hoopR`
+-   `AdvancedBasketballStats`
+
+Note: if you would prefer to analyze college basketball, packages exist for that too (such as `cbbdata`). If you would prefer to look into a different sport, we can investigate that as well. Please let me know in advance if you intend to go down one of these alternate routes.
+
+## The Tasks
+
+1.  (30 points) Produce a graphic displaying the shot locations for a particular team over several years. Some notes:
+
+    -   Colors should be chosen to reflect the team, if possible.
+    -   There are likely many overlaid points -- handle this by either binning these by location, or use opacity and size.
+    -   Incorporate information about whether the shot was made or not (shape, color, etc.).
+    -   The graphic should be well-labeled, titled, etc.
+    -   Start with a graph for a single year, then extend to several years. Up to 20 years of shot data is available. Either facet these by year or animate using the years.
+    -   You'll want to figure out what the coordinates mean somehow. This might be through the documentation, but could also be determined using aspects of the data itself and the dimensions of an NBA court.
+    -   Put a basketball court on the background of the image (you'll need to scale it appropriately).
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(hoopR)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(ggpubr)
+library(png)
+library(gganimate)
+library(gifski)
+
+data <- hoopR::load_nba_pbp(seasons = 2015:2026)
+view(data)
+
+```
+
+```{r, echo = FALSE}
+baby_data <- data |> filter(team_id == 3, shooting_play == TRUE) |> mutate(make_miss = ifelse(score_value > 0, "Make", "Miss")) |> select("score_value", "team_id", "shooting_play", "coordinate_x_raw", "coordinate_y_raw", "season", "make_miss")
+baby_data
+
+img <- readPNG("midterm_bbcourt.png")
+
+ggplot(baby_data, aes(x = coordinate_x_raw, y = coordinate_y_raw)) + background_image(img) + geom_jitter(aes(color = make_miss), width = 0.5, height = 0.5, alpha = 0.1, size = 1) + scale_color_manual(values = c("Make" = "#0C2340", "Miss" = "#C8102E")) + labs(title = "New Orleans Pelicans Shots {closest_state}", x = "Raw X Coord", y = "Raw Y Coord", color = "Shot Result") + coord_fixed(xlim = c(0, 50), ylim = c(0, 36.5)) + transition_states(season, transition_length = 3, state_length = 100)
+
+```
+
+2.  (30 points) Summarize the graphic/series of graphics into a digestible, bullet-point brief report for front-office staff. Some notes:
+
+    -   The main body of the report should be very brief -- just the graphic(s) and the bullet-pointed list of findings, which should be short and clear.
+    -   Include a more detailed explanation of these bullet points, for further reading by those interested. This section should follow the bullet-point section, but should be organized similarly for reference.
+    -   Your report to the front-office shouldn't include any code.
+    -   This report should be generated using RMarkdown. However, the choice of output type (Word, PDF, or HTML) is up to you (you could even make slides if you want to).
+
+### **Summary:**
+
+-   **Most Common Shot Locations:** under the basket, free throw line, corners, and top of three point line
+
+-   **Shift Across Seasons:** shot distribution slowly shifts from a wide spread to a condensed shot selection of just a few main spots
+
+-   **Make/Miss Ratio:** made shots appear more in the common shot locations and increase over time
+
+-   **Suggestions for Improvement:** focus on improving shot performance or shot location to increase overall scoring success
+
+### **Explanation:**
+
+-   **Most Common Shot Locations:**
+
+    -   The majority of shot attempts are made directly under the basket, on the free throw line, or along the three point line. On the three point line, there is a preference for the corners and wings, with fewer in between. The highest concentration of shot attempts are under the basket. This aligns with the common strategy for most basketball teams, which is to focus on point efficiency by prioritizing either close range shots and layups for easy points or three point shots for more points.
+
+-   **Shift Across Seasons:**
+
+    -   Looking at all the seasons, from 2015 to 2026, shot distribution gradually shifts. In the early seasons, there is a large spread of shots all over the court. Then, over time, the shot distribution narrows down to most being taken under the basket, on the free throw line, in the corners, or on the wings and less being taken in the mid range area. This indicates a clear improvement in playing style to prioritize scoring efficiency.
+
+-   **Make/Miss Ratio:**
+
+    -   The majority of made shots tend to be concentrated under the basket, where scoring is easier and more consistent, as well as on the free throw line in later seasons, where shots are uncontested. Over time, the data shows improvement in shot successes. In the early seasons you can clearly see there are more red dots, especially for free throws. It slowly shifts from red to blue in the later seasons , showing an increase in made free throws. There also appears to be a greater percentage of made shots beneath the basket in the later seasons compared to the early seasons.
+
+-   **Suggestions for Improvement:**
+
+    -   To improve overall scoring success, I suggest focusing on shot performance and better ball movement. Quality shots and opening up players would help increase the percentage of made shots. Another suggestion is to focus on taking more close range shots rather than three-pointers, since there is already higher success under the basket, which could lead to higher scoring output.
+
+3.  (30 points) Write and document clean, efficient, reproducible code. Some notes:
+
+-   This code will be viewed by your direct supervisor.
+
+-   The code file should include your code to gather, join, and clean the data; the code to generate the graphic(s) presented; and your commentary on the results (so, a single .rmd file, or an .rmd file that sources an .r file).
+
+-   Your code should be clean, organized, and reproducible. Remove unnecessary/scratch/exploratory code.
+
+-   Your code should be well commented. In particular, any decisions or judgement calls made in the analysis process should be explained/justified. Sections of code should be identified even if not functionalized (including purpose, data/argument inputs, analysis outputs).
+
+```{r, echo = TRUE}
+# add libraries
+library(tidyverse)
+library(hoopR)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(ggpubr)
+library(png)
+library(gganimate)
+library(gifski)
+
+# load in data from hoopR for seasons 2015 to 2026
+data <- hoopR::load_nba_pbp(seasons = 2015:2026)
+
+# filters data to the New Orleans Pelicans (team 3) and only shooting plays
+# adds new column to classify makes/misses
+# gets rid of unnecessary columns so data is easier to manage and loads faster
+baby_data <- data |> 
+  filter(team_id == 3, shooting_play == TRUE) |> 
+  mutate(make_miss = ifelse(score_value > 0, "Make", "Miss")) |> 
+  select("score_value", "team_id", "shooting_play", "coordinate_x_raw", "coordinate_y_raw", "season", "make_miss")
+
+# gets background image of court for animation
+img <- readPNG("midterm_bbcourt.png")
+
+# creates a plot based on raw x and y coords
+# adds background image of NBA court
+# adjust opacity (alpha) so darker AND added weight/height so dots are larger for multiple shots from same coords
+# assign colors for made/missed shots...made shots = Pelicans Navy, missed = Pelicans Red
+# added labels for title, axises, and legend
+# fix coords for more accurate alignment with background image
+# add animation between seasons, adjusting transition/state length for better viewing
+ggplot(baby_data, aes(x = coordinate_x_raw, y = coordinate_y_raw)) + 
+  background_image(img) + 
+  geom_jitter(aes(color = make_miss), width = 0.5, height = 0.5, alpha = 0.1, size = 1) + 
+  scale_color_manual(values = c("Make" = "#0C2340", "Miss" = "#C8102E")) + 
+  labs(title = "New Orleans Pelicans Shots {closest_state}", x = "Raw X Coord", y = "Raw Y Coord", color = "Shot Result") + 
+  coord_fixed(xlim = c(0, 50), ylim = c(0, 36.5)) + 
+  transition_states(season, transition_length = 3, state_length = 100)
+
+```
+
+4.  (10 points) Above and Beyond. Choose either option below. You are welcome to explore both, but only one is required.
+
+    -   Option 1: Explore the data a bit, and create a graphic that uses (or incorporates) different information than what was used above. Some notes:
+
+        -   Create an additional graphic that incorporates at least one additional variable not previously used (this should add to the graphic in part 1). The additional data should be drawn from a different dataset (function call) than the original graphic used. These two (or more) datasets may need to be joined appropriately.
+        -   You can either add more information to the plot above, or create a different plot.
+        -   Formatting, labelling, etc. are all important here too.
+        -   Adding marginal densities or other "bells and whistles" might offer additional insight.
+        -   This graphic should be included at the end of the report (after the more detailed explanations).
+        -   You should include a brief description of the graphic (highlighting the different/additional information used).
+
+    -   Option 2: If the NBA were to incorporate a 4-point shot, where would you draw a 4-point arc? Some notes:
+
+        -   You likely should base your decision at least partly on proportion of shots made from a given range. You might consider an expected value calculation here.
+        -   Your arc can be shaped as you see fit; simple arcs are sufficient for this exploration.
+        -   Provide an example of a consequence (positive or negative) if a 4-point shot was incorporated. (e.g., "my_favorite_player's season point total would increase by x%").
+        -   You do not need to create a plot representing your arc, though you are welcome to do so!
+
+### Analysis/Reasoning:
+
+The NBA three point line measures at 23.75 feet straight out from the base line. According to <https://www.statmuse.com/nba/ask/pelicans-3-point-shooting-percentage>, the Pelican's shooting percentage for three pointers in 2025-2026 is 34.7%. Using that percentage, an expected value for threes would be 3 \* 34.7% = 1.04. Based on that, the average make percentage for an imagined 4 point shot would have to be 1.04 / 4 = 26.03%. Then, to determine where to put the new 4 point line, I calculated how far out the Pelicans were making roughly 26.03% of their shots.
+
+```{r}
+part4data <- baby_data |> filter(coordinate_y_raw >= 28)
+makeCount <- sum(part4data$make_miss == "Make")
+percent28 <- makeCount / nrow(part4data)
+percent28
+
+part4data <- baby_data |> filter(coordinate_y_raw >= 27)
+makeCount <- sum(part4data$make_miss == "Make")
+percent27 <- makeCount / nrow(part4data)
+percent27
+```
+
+Based on the above code, I've determined the distance for a 4 point line should be 27.5 feet out from the base line. The Pelicans make roughly 28.59% of their shots at or beyond 27 feet from the base line, but only 22.96% of their shots at or beyond 28 feet. This makes 27.5 feet a happy medium that should get the make percentage close to 26%. Doing some simple math, 27.5 - 23.75 = 3.75, the 4 point line would follow the current 3 point line, but be 3.75 feet further from the basket.
+
+### Consequences:
+
+The addition of a 4 point line at 27.5 feet from the base line would have positive results for teams with players who consistently score deep threes. For anyone who can consistently score beyond 27.5 feet, all those former three point shots become four point shots, increasing their overall points per game which in turn increases their team's overall scoring output, causing their team to be more successful in games.
+
+Assuming my favorite player on the New Orleans Pelicans is Trey Murphy III, who currently has a 38.3 three point percentage, and, according to <https://thebirdwrites.com/triggad-trey-murphy-iiis-elite-shooting-sparks-pelicans/>, 41.8% of his threes are from 25-29 feet. With that kind of range, he would definitely be making a significant amount of 4 pointers, increasing his average points per game and giving his team a huge offensive advantage.
+
+## The Deliverables
+
+1.  Upload your report and code file(s) to GitHub by 5:00pm on Friday, April 3.
+2.  Submit (on Canvas) your report, code, and link to your GitHub repository by 5:00pm on Friday, April 3.
